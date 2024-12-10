@@ -6,6 +6,7 @@ import lxml.etree
 from .. import PROJECT_ROOT
 
 
+
 class MathMLParser(object):
 
     xml_decl_pattern = re.compile(

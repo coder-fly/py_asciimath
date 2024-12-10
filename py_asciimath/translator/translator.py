@@ -4,17 +4,17 @@ from abc import ABCMeta, abstractmethod
 
 import lxml.etree
 from lark import Lark
-
 from .. import PROJECT_ROOT
 from ..grammar.asciimath_grammar import asciimath_grammar
 from ..grammar.latex_grammar import latex_grammar
 from ..parser.parser import MathMLParser
 from ..transformer.transformer import (
-    ASCIIMath2MathMLTransformer,
     ASCIIMath2TexTransformer,
+    ASCIIMath2MathMLTransformer,
     Tex2ASCIIMathTransformer,
 )
 from ..utils.utils import check_connection
+
 
 
 class Translator(metaclass=ABCMeta):
@@ -262,9 +262,18 @@ class ASCIIMath2MathML(LarkTranslator):
             )
             + "</math>"
         )
-        if dtd_validation or xml_pprint or xml_declaration or output == "etree":
+        if (
+            dtd_validation
+            or xml_pprint
+            or xml_declaration
+            or output == "etree"
+        ):
             parsed = MathMLParser.parse(
-                parsed, dtd=dtd, dtd_validation=True, network=network, **kwargs
+                parsed,
+                dtd=dtd,
+                dtd_validation=True,
+                network=network,
+                **kwargs
             )
             if output == "string":
                 parsed = parsed.getroottree()
@@ -448,5 +457,9 @@ class MathML2Tex(Translator):  # pragma: no cover
             str: LaTeX translated expression
         """
         return super(MathML2Tex, self).translate(
-            exp, from_file=from_file, network=network, to_file=to_file, **kwargs
+            exp,
+            from_file=from_file,
+            network=network,
+            to_file=to_file,
+            **kwargs
         )
